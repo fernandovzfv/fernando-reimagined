@@ -32,7 +32,7 @@ const AboutSection = () => {
   ];
 
   return (
-    <section id="about" className="section-padding bg-secondary/50">
+    <section id="about" className="section-padding bg-secondary/80 backdrop-blur-sm">
       <div className="container mx-auto container-padding">
         <div className="max-w-3xl mx-auto text-center mb-16">
           <h2 className="mb-6">{t('aboutMe', language)}</h2>
@@ -46,7 +46,7 @@ const AboutSection = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {values.map((value, index) => (
-            <Card key={index} className="border border-border/50 shadow-sm hover:shadow-md transition-shadow bg-card">
+            <Card key={index} className="border border-border/50 shadow-sm hover:shadow-md transition-shadow bg-card/90 backdrop-blur-sm">
               <CardContent className="p-6">
                 <div className="rounded-full bg-accent/20 p-3 w-fit mb-4">
                   {value.icon}

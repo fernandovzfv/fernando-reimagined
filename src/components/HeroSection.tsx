@@ -12,13 +12,13 @@ const HeroSection = () => {
     <section id="home" className="min-h-screen flex flex-col justify-center relative overflow-hidden pb-16 pt-32">
       <div className="container mx-auto container-padding relative z-10">
         <div className="max-w-3xl">
-          <h1 className="animate-fade-in">
+          <h1 className="animate-fade-in backdrop-blur-sm inline-block">
             <span className="gradient-heading">
               {t('heroTitle', language)}
             </span>
           </h1>
           
-          <p className="text-xl md:text-2xl mt-6 text-foreground/90 animate-fade-in" style={{ animationDelay: '0.2s' }}>
+          <p className="text-xl md:text-2xl mt-6 text-foreground/90 animate-fade-in backdrop-blur-sm inline-block" style={{ animationDelay: '0.2s' }}>
             {t('heroDescription', language)}
           </p>
           
@@ -50,9 +50,9 @@ const HeroSection = () => {
         </a>
       </div>
       
-      {/* Background elements */}
-      <div className="absolute top-0 right-0 w-1/3 h-1/3 bg-gradient-to-bl from-brand-purple/20 to-transparent blur-3xl rounded-full"></div>
-      <div className="absolute bottom-0 left-0 w-1/3 h-1/3 bg-gradient-to-tr from-brand-blue/20 to-transparent blur-3xl rounded-full"></div>
+      {/* Background elements - reduced opacity to better show particles */}
+      <div className="absolute top-0 right-0 w-1/3 h-1/3 bg-gradient-to-bl from-brand-purple/10 to-transparent blur-3xl rounded-full"></div>
+      <div className="absolute bottom-0 left-0 w-1/3 h-1/3 bg-gradient-to-tr from-brand-blue/10 to-transparent blur-3xl rounded-full"></div>
     </section>
   );
 };
