@@ -2,6 +2,9 @@
 import React, { useEffect, useState } from 'react';
 import { useLanguage } from './LanguageProvider';
 import { supabase } from '@/integrations/supabase/client';
+import { Button } from '@/components/ui/button';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { Info } from 'lucide-react';
 
 interface PDFViewerProps {
   className?: string;
@@ -30,7 +33,13 @@ const PDFViewer: React.FC<PDFViewerProps> = ({ className }) => {
           .createSignedUrl(filename, 60 * 60); // 1 hour expiry
         
         if (error) {
-          throw error;
+          console.error('Error fetching PDF:', error);
+          if (error.message.includes('Object not found')) {
+            setError(`PDF file "${filename}" not found in the storage bucket. Please upload it to the "cv" bucket in Supabase.`);
+          } else {
+            setError('Failed to load CV. Please try again later.');
+          }
+          return;
         }
         
         setPdfUrl(data?.signedUrl || null);
@@ -55,9 +64,29 @@ const PDFViewer: React.FC<PDFViewerProps> = ({ className }) => {
   
   if (error) {
     return (
-      <div className={`flex justify-center items-center h-[calc(100vh-200px)] ${className}`}>
-        <div className="text-destructive text-center">
-          <p>{error}</p>
+      <div className={`flex flex-col justify-center items-center h-[calc(100vh-200px)] ${className} p-4`}>
+        <Alert variant="destructive" className="max-w-xl mb-4">
+          <Info className="h-4 w-4 mr-2" />
+          <AlertTitle>PDF File Not Found</AlertTitle>
+          <AlertDescription>
+            {error}
+          </AlertDescription>
+        </Alert>
+        
+        <div className="bg-muted p-4 rounded-md max-w-xl text-sm">
+          <h3 className="font-medium mb-2">How to fix this:</h3>
+          <ol className="list-decimal pl-4 space-y-2">
+            <li>Go to your Supabase dashboard</li>
+            <li>Navigate to the Storage section</li>
+            <li>Open the "cv" bucket</li>
+            <li>Upload these two files:
+              <ul className="list-disc pl-6 mt-1">
+                <li><code>CV-FERNANDO-VAZQUEZ-EN.pdf</code> - English version</li>
+                <li><code>CV-FERNANDO-VAZQUEZ-ES.pdf</code> - Spanish version</li>
+              </ul>
+            </li>
+            <li>Once uploaded, come back and refresh this page</li>
+          </ol>
         </div>
       </div>
     );
