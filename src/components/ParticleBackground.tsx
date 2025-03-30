@@ -29,13 +29,13 @@ const ParticleBackground = () => {
           fpsLimit: 60,
           particles: {
             color: {
-              value: theme === 'dark' ? "#8B5CF6" : "#0071e3",
+              value: "#0071e3", // Same blue color for both themes
             },
             links: {
-              color: theme === 'dark' ? "#8B5CF6" : "#0071e3",
+              color: "#0071e3", // Same blue color for both themes
               distance: 150,
               enable: true,
-              opacity: 0.2,
+              opacity: 0.15, // More transparent links
               width: 1,
             },
             collisions: {
@@ -59,7 +59,7 @@ const ParticleBackground = () => {
               value: 40,
             },
             opacity: {
-              value: 0.3,
+              value: 0.2, // More transparent particles
             },
             shape: {
               type: "polygon",
@@ -68,7 +68,7 @@ const ParticleBackground = () => {
               },
             },
             size: {
-              value: { min: 5, max: 15 },
+              value: { min: 3, max: 8 }, // Smaller hexagons
             },
           },
           detectRetina: true,
