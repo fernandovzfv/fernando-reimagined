@@ -4,7 +4,6 @@ import { Shield, Lightbulb, Code, BookOpen } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { useLanguage } from './LanguageProvider';
 import { t } from '@/lib/translations';
-import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 
 const AboutSection = () => {
   const { language } = useLanguage();
@@ -39,16 +38,11 @@ const AboutSection = () => {
           {/* Left column with image */}
           <div className="lg:col-span-2 flex justify-center">
             <div className="relative w-full h-[400px] md:h-[500px] overflow-hidden rounded-md border-4 border-brand-blue/20 shadow-xl">
-              <Avatar className="w-full h-full rounded-none">
-                <AvatarImage
-                  src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?ixlib=rb-1.2.1&auto=format&fit=crop&w=1200&q=80"
-                  alt="Profile"
-                  className="object-cover"
-                />
-                <AvatarFallback className="bg-brand-blue/10 text-5xl font-bold text-brand-blue rounded-none">
-                  FM
-                </AvatarFallback>
-              </Avatar>
+              <img
+                src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?ixlib=rb-1.2.1&auto=format&fit=crop&w=1200&q=80"
+                alt="Developer profile"
+                className="w-full h-full object-cover"
+              />
             </div>
           </div>
           
