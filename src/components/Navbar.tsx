@@ -6,6 +6,7 @@ import ThemeToggle from './ThemeToggle';
 import LanguageToggle from './LanguageToggle';
 import { useLanguage } from './LanguageProvider';
 import { t } from '@/lib/translations';
+import { Link } from 'react-router-dom';
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -28,11 +29,12 @@ const Navbar = () => {
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
   const navLinks = [
-    { name: t('home', language), href: '#home' },
-    { name: t('about', language), href: '#about' },
-    { name: t('skills', language), href: '#skills' },
-    { name: t('projects', language), href: '#projects' },
-    { name: t('contact', language), href: '#contact' },
+    { name: t('home', language), href: '#home', isAnchor: true },
+    { name: t('about', language), href: '#about', isAnchor: true },
+    { name: t('skills', language), href: '#skills', isAnchor: true },
+    { name: t('projects', language), href: '#projects', isAnchor: true },
+    { name: t('contact', language), href: '#contact', isAnchor: true },
+    { name: 'CV', href: '/cv', isAnchor: false },
   ];
 
   return (
@@ -43,20 +45,30 @@ const Navbar = () => {
       )}
     >
       <div className="container mx-auto flex justify-between items-center container-padding">
-        <a href="#home" className="text-2xl font-bold">
+        <Link to="/" className="text-2xl font-bold">
           <span className="gradient-heading">Fernando</span>
-        </a>
+        </Link>
 
         {/* Desktop Navigation */}
         <div className="hidden md:flex items-center space-x-8">
           {navLinks.map((link) => (
-            <a
-              key={link.name}
-              href={link.href}
-              className="text-foreground/80 hover:text-foreground transition-colors font-medium"
-            >
-              {link.name}
-            </a>
+            link.isAnchor ? (
+              <a
+                key={link.name}
+                href={link.href}
+                className="text-foreground/80 hover:text-foreground transition-colors font-medium"
+              >
+                {link.name}
+              </a>
+            ) : (
+              <Link
+                key={link.name}
+                to={link.href}
+                className="text-foreground/80 hover:text-foreground transition-colors font-medium"
+              >
+                {link.name}
+              </Link>
+            )
           ))}
           
           {/* Theme & Language Toggles */}
@@ -88,14 +100,25 @@ const Navbar = () => {
         )}
       >
         {navLinks.map((link) => (
-          <a
-            key={link.name}
-            href={link.href}
-            className="py-4 text-lg font-medium border-b border-border/50"
-            onClick={() => setIsMenuOpen(false)}
-          >
-            {link.name}
-          </a>
+          link.isAnchor ? (
+            <a
+              key={link.name}
+              href={link.href}
+              className="py-4 text-lg font-medium border-b border-border/50"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              {link.name}
+            </a>
+          ) : (
+            <Link
+              key={link.name}
+              to={link.href}
+              className="py-4 text-lg font-medium border-b border-border/50"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              {link.name}
+            </Link>
+          )
         ))}
       </div>
     </nav>

@@ -1,4 +1,3 @@
-
 type TranslationKey = 
   | 'home'
   | 'about'
@@ -56,7 +55,8 @@ type TranslationKey =
   | 'messageLabel'
   | 'submitButton'
   | 'footerRights'
-  | 'footerDesigned';
+  | 'footerDesigned'
+  | 'cv';
 
 export const translations: Record<'en' | 'es', Record<TranslationKey, string>> = {
   en: {
@@ -116,7 +116,8 @@ export const translations: Record<'en' | 'es', Record<TranslationKey, string>> =
     messageLabel: 'Message',
     submitButton: 'Send Message',
     footerRights: 'All rights reserved.',
-    footerDesigned: 'Designed and built with ❤️'
+    footerDesigned: 'Designed and built with ❤️',
+    cv: 'CV'
   },
   es: {
     home: 'Inicio',
@@ -175,7 +176,8 @@ export const translations: Record<'en' | 'es', Record<TranslationKey, string>> =
     messageLabel: 'Mensaje',
     submitButton: 'Enviar Mensaje',
     footerRights: 'Todos los derechos reservados.',
-    footerDesigned: 'Diseñado y construido con ❤️'
+    footerDesigned: 'Diseñado y construido con ❤️',
+    cv: 'Currículum'
   }
 };
 
