@@ -16,9 +16,10 @@ const PDFViewer: React.FC<PDFViewerProps> = ({ className }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   
+  // Adjusted filenames to match what's actually in the Supabase storage
   const filename = language === 'en' 
-    ? 'CV-FERNANDO-VAZQUEZ-EN.pdf' 
-    : 'CV-FERNANDO-VAZQUEZ-ES.pdf';
+    ? 'CV-FERNANDO-VAZQUEZ-EN.pdf.pdf' 
+    : 'CV-FERNANDO-VAZQUEZ-ES.pdf.pdf';
 
   useEffect(() => {
     const fetchPDF = async () => {
