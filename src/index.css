@@ -113,9 +113,14 @@
 @layer utilities {
   .gradient-heading {
     @apply bg-gradient-to-r from-brand-blue via-brand-purple to-brand-teal bg-clip-text text-transparent;
-    text-shadow: 0 0 1px rgba(255, 255, 255, 0.2);
     
-    /* Ensure visibility in dark mode */
+    /* Base visibility enhancement for all modes */
+    text-shadow: 0 0 1px rgba(0, 0, 0, 0.3);
+    
+    /* Light mode specific enhancement */
+    @apply font-extrabold;
+    
+    /* Dark mode specific enhancement */
     .dark & {
       text-shadow: 0 0 2px rgba(255, 255, 255, 0.5);
     }
