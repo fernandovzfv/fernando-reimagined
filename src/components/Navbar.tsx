@@ -3,10 +3,14 @@ import React, { useState, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { Menu, X } from 'lucide-react';
 import ThemeToggle from './ThemeToggle';
+import LanguageToggle from './LanguageToggle';
+import { useLanguage } from './LanguageProvider';
+import { t } from '@/lib/translations';
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const { language } = useLanguage();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -24,11 +28,11 @@ const Navbar = () => {
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
   const navLinks = [
-    { name: 'Home', href: '#home' },
-    { name: 'About', href: '#about' },
-    { name: 'Skills', href: '#skills' },
-    { name: 'Projects', href: '#projects' },
-    { name: 'Contact', href: '#contact' },
+    { name: t('home', language), href: '#home' },
+    { name: t('about', language), href: '#about' },
+    { name: t('skills', language), href: '#skills' },
+    { name: t('projects', language), href: '#projects' },
+    { name: t('contact', language), href: '#contact' },
   ];
 
   return (
@@ -55,13 +59,17 @@ const Navbar = () => {
             </a>
           ))}
           
-          {/* Theme Toggle */}
-          <ThemeToggle />
+          {/* Theme & Language Toggles */}
+          <div className="flex items-center space-x-2">
+            <ThemeToggle />
+            <LanguageToggle />
+          </div>
         </div>
 
         {/* Mobile Navigation Toggle */}
         <div className="flex items-center space-x-4 md:hidden">
           <ThemeToggle />
+          <LanguageToggle />
           <button
             onClick={toggleMenu}
             className="text-foreground p-2 rounded-md"
