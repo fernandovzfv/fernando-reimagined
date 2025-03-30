@@ -113,6 +113,12 @@
 @layer utilities {
   .gradient-heading {
     @apply bg-gradient-to-r from-brand-blue via-brand-purple to-brand-teal bg-clip-text text-transparent;
+    text-shadow: 0 0 1px rgba(255, 255, 255, 0.2);
+    
+    /* Ensure visibility in dark mode */
+    .dark & {
+      text-shadow: 0 0 2px rgba(255, 255, 255, 0.5);
+    }
   }
   
   .section-padding {
