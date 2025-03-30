@@ -4,46 +4,42 @@ import { useLanguage } from './LanguageProvider';
 import { Globe } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
 
 const LanguageToggle = () => {
   const { language, setLanguage } = useLanguage();
   
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button 
-          variant="secondary" 
-          size="sm"
-          className="flex items-center gap-1.5 px-2.5 h-9 rounded-full ml-2"
-          aria-label="Select language"
-        >
-          <Globe size={16} className="text-foreground/80" />
-          <span className="text-xs font-medium">EN / ES</span>
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
-        <DropdownMenuItem 
-          className={cn("cursor-pointer", language === 'en' && "font-bold")}
-          onClick={() => setLanguage('en')}
-        >
-          <span className="mr-2">🇺🇸</span> English
-          {language === 'en' && <span className="ml-2 text-xs">✓</span>}
-        </DropdownMenuItem>
-        <DropdownMenuItem 
-          className={cn("cursor-pointer", language === 'es' && "font-bold")}
-          onClick={() => setLanguage('es')}
-        >
-          <span className="mr-2">🇪🇸</span> Español
-          {language === 'es' && <span className="ml-2 text-xs">✓</span>}
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
+    <div className="flex items-center gap-1 ml-2">
+      <Button 
+        variant="ghost" 
+        size="sm"
+        className={cn(
+          "px-2 h-9 rounded-full", 
+          language === 'en' ? "font-bold" : "font-normal text-muted-foreground"
+        )}
+        onClick={() => setLanguage('en')}
+        aria-label="Switch to English"
+      >
+        <span className="text-xs">EN</span>
+      </Button>
+      
+      <span className="text-muted-foreground">/</span>
+      
+      <Button 
+        variant="ghost" 
+        size="sm"
+        className={cn(
+          "px-2 h-9 rounded-full", 
+          language === 'es' ? "font-bold" : "font-normal text-muted-foreground"
+        )}
+        onClick={() => setLanguage('es')}
+        aria-label="Switch to Spanish"
+      >
+        <span className="text-xs">ES</span>
+      </Button>
+      
+      <Globe size={16} className="text-foreground/80 ml-1" />
+    </div>
   );
 };
 
