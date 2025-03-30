@@ -3,8 +3,12 @@ import React from 'react';
 import { Progress } from '@/components/ui/progress';
 import { Separator } from '@/components/ui/separator';
 import { CheckCircle2 } from 'lucide-react';
+import { useLanguage } from './LanguageProvider';
+import { t } from '@/lib/translations';
 
 const SkillsSection = () => {
+  const { language } = useLanguage();
+  
   const technicalSkills = [
     { name: "JavaScript", level: 90 },
     { name: "React.js", level: 85 },
@@ -23,20 +27,28 @@ const SkillsSection = () => {
     "Technical Documentation"
   ];
 
+  const otherSkillsTranslated = language === 'es' ? [
+    "Resolución de Problemas",
+    "Colaboración en Equipo",
+    "Gestión de Proyectos",
+    "Principios de Diseño UX/UI",
+    "Metodologías Ágiles",
+    "Documentación Técnica"
+  ] : otherSkills;
+
   return (
     <section id="skills" className="section-padding">
       <div className="container mx-auto container-padding">
         <div className="max-w-3xl mx-auto text-center mb-16">
-          <h2 className="mb-6">My Skills</h2>
+          <h2 className="mb-6">{t('skillsTitle', language)}</h2>
           <p className="text-lg text-foreground/80">
-            I've developed a diverse skill set throughout my career. Here's an overview of my technical expertise
-            and other professional capabilities.
+            {t('skillsDescription', language)}
           </p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
           <div>
-            <h3 className="text-2xl font-bold mb-6">Technical Skills</h3>
+            <h3 className="text-2xl font-bold mb-6">{t('technicalSkills', language)}</h3>
             <div className="space-y-6">
               {technicalSkills.map((skill, index) => (
                 <div key={index}>
@@ -51,9 +63,9 @@ const SkillsSection = () => {
           </div>
 
           <div>
-            <h3 className="text-2xl font-bold mb-6">Other Skills & Abilities</h3>
+            <h3 className="text-2xl font-bold mb-6">{t('otherSkills', language)}</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {otherSkills.map((skill, index) => (
+              {otherSkillsTranslated.map((skill, index) => (
                 <div key={index} className="flex items-center gap-2">
                   <CheckCircle2 className="text-brand-teal h-5 w-5 flex-shrink-0" />
                   <span>{skill}</span>
@@ -63,19 +75,19 @@ const SkillsSection = () => {
 
             <Separator className="my-8" />
 
-            <h3 className="text-2xl font-bold mb-6">Languages</h3>
+            <h3 className="text-2xl font-bold mb-6">{t('languages', language)}</h3>
             <div className="space-y-4">
               <div>
                 <div className="flex justify-between mb-2">
-                  <span className="font-medium">English</span>
-                  <span className="text-foreground/70">Fluent</span>
+                  <span className="font-medium">{t('english', language)}</span>
+                  <span className="text-foreground/70">{t('fluent', language)}</span>
                 </div>
                 <Progress value={95} className="h-2" />
               </div>
               <div>
                 <div className="flex justify-between mb-2">
-                  <span className="font-medium">Spanish</span>
-                  <span className="text-foreground/70">Native</span>
+                  <span className="font-medium">{t('spanish', language)}</span>
+                  <span className="text-foreground/70">{t('native', language)}</span>
                 </div>
                 <Progress value={100} className="h-2" />
               </div>

@@ -2,28 +2,32 @@
 import React from 'react';
 import { ArrowDown, Github, Linkedin, Mail } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { useLanguage } from './LanguageProvider';
+import { t } from '@/lib/translations';
 
 const HeroSection = () => {
+  const { language } = useLanguage();
+  
   return (
     <section id="home" className="min-h-screen flex flex-col justify-center relative overflow-hidden pb-16 pt-32">
       <div className="container mx-auto container-padding relative z-10">
         <div className="max-w-3xl">
           <h1 className="animate-fade-in">
             <span className="gradient-heading">
-              Hi, I'm Fernando Vázquez.
+              {t('heroTitle', language)}
             </span>
           </h1>
           
           <p className="text-xl md:text-2xl mt-6 text-foreground/90 animate-fade-in" style={{ animationDelay: '0.2s' }}>
-            Computer Science Engineer with a strong passion for technology, software development, and problem-solving.
+            {t('heroDescription', language)}
           </p>
           
           <div className="flex flex-wrap gap-4 mt-10 animate-fade-in" style={{ animationDelay: '0.4s' }}>
             <Button className="bg-brand-blue hover:bg-brand-blue/90">
-              <Mail className="mr-2 h-4 w-4" /> Contact Me
+              <Mail className="mr-2 h-4 w-4" /> {t('ctaButton', language)}
             </Button>
             <Button variant="outline" className="border-brand-blue text-brand-blue hover:bg-brand-blue/10">
-              Download Resume
+              {language === 'en' ? 'Download Resume' : 'Descargar CV'}
             </Button>
           </div>
           

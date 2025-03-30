@@ -4,8 +4,12 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Mail, MapPin, Phone, Send } from 'lucide-react';
+import { useLanguage } from './LanguageProvider';
+import { t } from '@/lib/translations';
 
 const ContactSection = () => {
+  const { language } = useLanguage();
+  
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     // This would typically handle form submission
@@ -16,21 +20,20 @@ const ContactSection = () => {
     <section id="contact" className="section-padding">
       <div className="container mx-auto container-padding">
         <div className="max-w-3xl mx-auto text-center mb-16">
-          <h2 className="mb-6">Get In Touch</h2>
+          <h2 className="mb-6">{t('contactTitle', language)}</h2>
           <p className="text-lg text-foreground/80">
-            Have a question or want to work together? Feel free to reach out to me using the form below
-            or through my contact information.
+            {t('contactDescription', language)}
           </p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
           <div>
-            <h3 className="text-2xl font-bold mb-6">Contact Information</h3>
+            <h3 className="text-2xl font-bold mb-6">{t('contactInfo', language)}</h3>
             <div className="space-y-6">
               <div className="flex items-start gap-4">
                 <Mail className="h-6 w-6 text-brand-blue mt-1" />
                 <div>
-                  <h4 className="font-semibold">Email</h4>
+                  <h4 className="font-semibold">{t('email', language)}</h4>
                   <a href="mailto:contact@example.com" className="text-foreground/70 hover:text-brand-blue transition-colors">
                     contact@example.com
                   </a>
@@ -40,7 +43,7 @@ const ContactSection = () => {
               <div className="flex items-start gap-4">
                 <Phone className="h-6 w-6 text-brand-purple mt-1" />
                 <div>
-                  <h4 className="font-semibold">Phone</h4>
+                  <h4 className="font-semibold">{t('phone', language)}</h4>
                   <a href="tel:+1234567890" className="text-foreground/70 hover:text-brand-blue transition-colors">
                     +1 (234) 567-890
                   </a>
@@ -50,14 +53,14 @@ const ContactSection = () => {
               <div className="flex items-start gap-4">
                 <MapPin className="h-6 w-6 text-brand-teal mt-1" />
                 <div>
-                  <h4 className="font-semibold">Location</h4>
+                  <h4 className="font-semibold">{t('location', language)}</h4>
                   <p className="text-foreground/70">Mexico City, Mexico</p>
                 </div>
               </div>
             </div>
 
             <div className="mt-10">
-              <h3 className="text-2xl font-bold mb-6">Social Media</h3>
+              <h3 className="text-2xl font-bold mb-6">{t('socialMedia', language)}</h3>
               <div className="flex gap-4">
                 <a 
                   href="https://github.com/fernandovzfv" 
@@ -97,34 +100,34 @@ const ContactSection = () => {
             <form onSubmit={handleSubmit} className="space-y-6">
               <div>
                 <label htmlFor="name" className="block mb-2 font-medium">
-                  Name
+                  {t('nameLabel', language)}
                 </label>
-                <Input id="name" placeholder="Your name" />
+                <Input id="name" placeholder={language === 'en' ? "Your name" : "Tu nombre"} />
               </div>
               
               <div>
                 <label htmlFor="email" className="block mb-2 font-medium">
-                  Email
+                  {t('emailLabel', language)}
                 </label>
-                <Input id="email" type="email" placeholder="your.email@example.com" />
+                <Input id="email" type="email" placeholder={language === 'en' ? "your.email@example.com" : "tu.correo@ejemplo.com"} />
               </div>
               
               <div>
                 <label htmlFor="subject" className="block mb-2 font-medium">
-                  Subject
+                  {t('subjectLabel', language)}
                 </label>
-                <Input id="subject" placeholder="How can I help you?" />
+                <Input id="subject" placeholder={language === 'en' ? "How can I help you?" : "¿Cómo puedo ayudarte?"} />
               </div>
               
               <div>
                 <label htmlFor="message" className="block mb-2 font-medium">
-                  Message
+                  {t('messageLabel', language)}
                 </label>
-                <Textarea id="message" placeholder="Your message..." className="min-h-[150px]" />
+                <Textarea id="message" placeholder={language === 'en' ? "Your message..." : "Tu mensaje..."} className="min-h-[150px]" />
               </div>
               
               <Button type="submit" className="w-full bg-brand-blue hover:bg-brand-blue/90">
-                <Send className="mr-2 h-4 w-4" /> Send Message
+                <Send className="mr-2 h-4 w-4" /> {t('submitButton', language)}
               </Button>
             </form>
           </div>
