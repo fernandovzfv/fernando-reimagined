@@ -26,17 +26,11 @@ const PDFViewer: React.FC<PDFViewerProps> = ({ className }) => {
         setIsLoading(true);
         setError(null);
         
-        // Get public URL directly instead of using signed URLs
-        const { data, error } = await supabase
+        // Get public URL directly - this method doesn't return an error object
+        const { data } = await supabase
           .storage
           .from('cv')
           .getPublicUrl(filename);
-        
-        if (error) {
-          console.error('Error fetching PDF:', error);
-          setError('Failed to load CV. Please try again later.');
-          return;
-        }
         
         if (!data.publicUrl) {
           setError(`PDF file "${filename}" not found. Please ensure it's uploaded to the Supabase bucket.`);
