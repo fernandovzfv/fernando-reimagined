@@ -21,8 +21,8 @@ const CV = () => {
       
       <Navbar />
       
-      <main className="flex-grow container mx-auto pt-24 pb-8 px-4">
-        <PDFViewer />
+      <main className="flex-grow container mx-auto pt-20 pb-6 px-4">
+        <PDFViewer className="mb-6" />
       </main>
       
       <Footer />

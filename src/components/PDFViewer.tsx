@@ -53,7 +53,7 @@ const PDFViewer: React.FC<PDFViewerProps> = ({ className }) => {
   
   if (isLoading) {
     return (
-      <div className={`flex justify-center items-center h-[calc(100vh-200px)] ${className}`}>
+      <div className={`flex justify-center items-center h-[70vh] ${className}`}>
         <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
       </div>
     );
@@ -61,7 +61,7 @@ const PDFViewer: React.FC<PDFViewerProps> = ({ className }) => {
   
   if (error) {
     return (
-      <div className={`flex flex-col justify-center items-center h-[calc(100vh-200px)] ${className} p-4`}>
+      <div className={`flex flex-col justify-center items-center h-[70vh] ${className} p-4`}>
         <Alert variant="destructive" className="max-w-xl mb-4">
           <Info className="h-4 w-4 mr-2" />
           <AlertTitle>PDF File Not Found</AlertTitle>
@@ -91,7 +91,7 @@ const PDFViewer: React.FC<PDFViewerProps> = ({ className }) => {
   }
   
   return (
-    <div className={`w-full h-[calc(100vh-200px)] ${className}`}>
+    <div className={`w-full h-[70vh] ${className}`}>
       {pdfUrl ? (
         <iframe
           src={pdfUrl}
