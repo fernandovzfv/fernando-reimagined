@@ -3,6 +3,7 @@ import React, { useCallback } from 'react';
 import Particles from "react-tsparticles";
 import { loadFull } from "tsparticles";
 import type { Engine } from "tsparticles-engine";
+import { loadPolygonPath } from "tsparticles-path-polygon";
 import { useTheme } from './ThemeProvider';
 
 const ParticleBackground = () => {
@@ -10,6 +11,7 @@ const ParticleBackground = () => {
   
   const particlesInit = useCallback(async (engine: Engine) => {
     await loadFull(engine);
+    await loadPolygonPath(engine);
   }, []);
 
   return (
@@ -29,17 +31,7 @@ const ParticleBackground = () => {
           fpsLimit: 60,
           particles: {
             color: {
-              value: "#0071e3", // Same blue color for both themes
-            },
-            links: {
-              color: "#0071e3", // Same blue color for both themes
-              distance: 150,
-              enable: true,
-              opacity: 0.15, // More transparent links
-              width: 1,
-            },
-            collisions: {
-              enable: false,
+              value: "#0071e3",
             },
             move: {
               direction: "none",
@@ -48,7 +40,7 @@ const ParticleBackground = () => {
                 default: "bounce",
               },
               random: true,
-              speed: 1,
+              speed: 1.5,
               straight: false,
             },
             number: {
@@ -56,19 +48,34 @@ const ParticleBackground = () => {
                 enable: true,
                 area: 800,
               },
-              value: 40,
+              value: 80,
             },
             opacity: {
-              value: 0.2, // More transparent particles
+              value: 0.3,
             },
             shape: {
-              type: "polygon",
-              polygon: {
-                sides: 6, // hexagon
+              type: "path",
+              options: {
+                path: {
+                  // Hexagon path
+                  data: "M41.9,29.5L25,37.9L8.1,29.5v-17L25,4.1l16.9,8.4V29.5z",
+                  // Scale the shape to adjust its size
+                  scale: 1,
+                },
               },
             },
             size: {
-              value: { min: 3, max: 8 }, // Smaller hexagons
+              value: { min: 5, max: 15 },
+            },
+            links: {
+              color: "#0071e3",
+              distance: 150,
+              enable: true,
+              opacity: 0.2,
+              width: 1,
+            },
+            collisions: {
+              enable: false,
             },
           },
           detectRetina: true,
