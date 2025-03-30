@@ -26,23 +26,25 @@ const PDFViewer: React.FC<PDFViewerProps> = ({ className }) => {
         setIsLoading(true);
         setError(null);
         
-        // Get the PDF URL from Supabase Storage
+        // Get public URL directly instead of using signed URLs
         const { data, error } = await supabase
           .storage
           .from('cv')
-          .createSignedUrl(filename, 60 * 60); // 1 hour expiry
+          .getPublicUrl(filename);
         
         if (error) {
           console.error('Error fetching PDF:', error);
-          if (error.message.includes('Object not found')) {
-            setError(`PDF file "${filename}" not found in the storage bucket. Please upload it to the "cv" bucket in Supabase.`);
-          } else {
-            setError('Failed to load CV. Please try again later.');
-          }
+          setError('Failed to load CV. Please try again later.');
           return;
         }
         
-        setPdfUrl(data?.signedUrl || null);
+        if (!data.publicUrl) {
+          setError(`PDF file "${filename}" not found. Please ensure it's uploaded to the Supabase bucket.`);
+          return;
+        }
+        
+        console.log('PDF URL retrieved:', data.publicUrl);
+        setPdfUrl(data.publicUrl);
       } catch (err) {
         console.error('Error fetching PDF:', err);
         setError('Failed to load CV. Please try again later.');
@@ -85,6 +87,7 @@ const PDFViewer: React.FC<PDFViewerProps> = ({ className }) => {
                 <li><code>CV-FERNANDO-VAZQUEZ-ES.pdf</code> - Spanish version</li>
               </ul>
             </li>
+            <li>Make sure the bucket is set to public</li>
             <li>Once uploaded, come back and refresh this page</li>
           </ol>
         </div>
