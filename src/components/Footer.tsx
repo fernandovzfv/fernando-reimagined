@@ -10,9 +10,9 @@ const Footer = () => {
   const { language } = useLanguage();
   
   return (
-    <footer className="bg-secondary py-12">
-      <div className="container mx-auto container-padding min-h-[30vh] flex flex-col">
-        <div className="flex flex-col md:flex-row items-center justify-between gap-8 flex-grow">
+    <footer className="bg-secondary py-6">
+      <div className="container mx-auto container-padding min-h-[20vh] flex flex-col">
+        <div className="flex flex-col md:flex-row items-center justify-between gap-8">
           <div className="flex flex-col items-center md:items-start">
             <a href="#home" className="text-2xl font-bold">
               <span className="relative">
