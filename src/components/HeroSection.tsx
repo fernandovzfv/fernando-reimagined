@@ -14,9 +14,9 @@ const HeroSection = () => {
         <div className="max-w-3xl">
           <h1 className="animate-fade-in backdrop-blur-sm inline-block text-foreground">
             <span className="relative">
-              <span className="inline-block">Hi! I'm </span>
+              <span className="inline-block">Hi! I'm  </span>
               <span className="inline-block text-brand-purple transform -rotate-12 font-extrabold">F</span>
-              <span className="inline-block">ernando</span>
+              <span className="inline-block">ernando </span>
               <span className="inline-block text-brand-purple transform -rotate-12 font-extrabold">V</span>
               <span className="inline-block">ázquez</span></span>
           </h1>
