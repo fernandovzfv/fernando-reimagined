@@ -48,7 +48,7 @@ const ContactSection = () => {
     // Load Google reCAPTCHA v3 script
     const loadRecaptchaScript = () => {
       const script = document.createElement('script');
-      script.src = 'https://www.google.com/recaptcha/api.js?render=6Ldq3ggmAAAAAJEU57TIWUH5i0FM0L7BlPKZ_IS4';
+      script.src = 'https://www.google.com/recaptcha/api.js?render=6Lf-HAwrAAAAANfLjh8osAm2QQqKLDpbXMeHkVFR';
       script.async = true;
       script.defer = true;
       document.head.appendChild(script);
@@ -93,7 +93,7 @@ const ContactSection = () => {
     }
 
     try {
-      const token = await (window as any).grecaptcha.execute('6Ldq3ggmAAAAAJEU57TIWUH5i0FM0L7BlPKZ_IS4', {action: 'contact_form'});
+      const token = await (window as any).grecaptcha.execute('6Lf-HAwrAAAAANfLjh8osAm2QQqKLDpbXMeHkVFR', {action: 'contact_form'});
       return token;
     } catch (error) {
       console.error('reCAPTCHA execution error:', error);
