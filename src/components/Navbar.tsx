@@ -45,8 +45,11 @@ const Navbar = () => {
       )}
     >
       <div className="container mx-auto flex justify-between items-center container-padding">
-        <Link to="/" className="text-2xl font-bold">
-          <span className="gradient-heading">Fernando</span>
+        <Link to="/" className="text-2xl font-bold text-foreground">
+          <span className="relative">
+            <span className="inline-block text-brand-purple transform -rotate-12 font-extrabold">F</span>
+            <span className="inline-block">ernando</span>
+          </span>
         </Link>
 
         {/* Desktop Navigation */}

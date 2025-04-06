@@ -12,9 +12,10 @@ const HeroSection = () => {
     <section id="home" className="min-h-screen flex flex-col justify-center relative overflow-hidden pb-16 pt-32">
       <div className="container mx-auto container-padding relative z-10">
         <div className="max-w-3xl">
-          <h1 className="animate-fade-in backdrop-blur-sm inline-block">
-            <span className="gradient-heading">
-              {t('heroTitle', language)}
+          <h1 className="animate-fade-in backdrop-blur-sm inline-block text-foreground">
+            <span className="relative">
+              <span className="inline-block text-brand-purple transform -rotate-12 font-extrabold">F</span>
+              <span className="inline-block">ernando</span>
             </span>
           </h1>
           
