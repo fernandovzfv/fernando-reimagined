@@ -42,7 +42,11 @@ const HeroSection = () => {
                        transition: 'transform 0.1s ease-out',
                      }}>F</span>
               <span className="inline-block">ernando </span>
-              <span className="inline-block text-brand-purple transform -rotate-12 font-extrabold">V</span>
+              <span className="inline-block text-brand-blue transform font-extrabold" 
+                     style={{ 
+                       transform: `rotate(${rotation}deg) scale(${scale})`,
+                       transition: 'transform 0.1s ease-out',
+                     }}>V</span>
               <span className="inline-block">ázquez</span></span>
           </h1>
           
