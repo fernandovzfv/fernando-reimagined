@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { ArrowDown, Github, Linkedin, Mail } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useLanguage } from './LanguageProvider';
@@ -7,6 +7,26 @@ import { t } from '@/lib/translations';
 
 const HeroSection = () => {
   const { language } = useLanguage();
+  const [rotation, setRotation] = useState(-12);
+  const [scale, setScale] = useState(1);
+  
+  // Track mouse position for interactive effect
+  const handleMouseMove = (e: MouseEvent) => {
+    // Calculate rotation based on mouse position
+    const xPos = (e.clientX / window.innerWidth) * 2 - 1;
+    const yPos = (e.clientY / window.innerHeight) * 2 - 1;
+    
+    // Update rotation and scale based on mouse position
+    setRotation(-12 + xPos * 10);
+    setScale(1 + Math.abs(yPos) * 0.15);
+  };
+  
+  useEffect(() => {
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+    };
+  }, []);
   
   return (
     <section id="home" className="min-h-screen flex flex-col justify-center relative overflow-hidden pb-16 pt-32">
@@ -14,8 +34,13 @@ const HeroSection = () => {
         <div className="max-w-3xl">
           <h1 className="animate-fade-in backdrop-blur-sm inline-block text-foreground">
             <span className="relative">
-              <span className="inline-block">Hi! I'm  </span>
-              <span className="inline-block text-brand-purple transform -rotate-12 font-extrabold">F</span>
+              <span className="inline-block">Hi! I'm </span>
+              {" "}
+              <span className="inline-block text-brand-blue transform font-extrabold" 
+                     style={{ 
+                       transform: `rotate(${rotation}deg) scale(${scale})`,
+                       transition: 'transform 0.1s ease-out',
+                     }}>F</span>
               <span className="inline-block">ernando </span>
               <span className="inline-block text-brand-purple transform -rotate-12 font-extrabold">V</span>
               <span className="inline-block">ázquez</span></span>
