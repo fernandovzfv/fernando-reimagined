@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -11,7 +11,7 @@ import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { useToast } from '@/hooks/use-toast';
-import { supabase } from '@/integrations/supabase/client';
+import { Alert, AlertDescription } from '@/components/ui/alert';
 
 // Define schema for form validation
 const formSchema = z.object({
@@ -19,12 +19,17 @@ const formSchema = z.object({
   email: z.string().email({ message: "Please enter a valid email address." }),
   subject: z.string().min(2, { message: "Subject must be at least 2 characters." }),
   message: z.string().min(10, { message: "Message must be at least 10 characters." }),
+  honeypot: z.string().optional(), // Honeypot field
 });
 
 const ContactSection = () => {
   const { language } = useLanguage();
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [recaptchaToken, setRecaptchaToken] = useState('');
+  const [ipAddress, setIpAddress] = useState('');
+  const [hasSubmittedRecently, setHasSubmittedRecently] = useState(false);
+  const recaptchaRef = useRef<any>(null);
   
   // Initialize form with validation schema
   const form = useForm<z.infer<typeof formSchema>>({
@@ -34,22 +39,129 @@ const ContactSection = () => {
       email: '',
       subject: '',
       message: '',
+      honeypot: '', // Initialize honeypot field
     },
   });
 
-  const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    setIsSubmitting(true);
+  // Load reCAPTCHA script
+  useEffect(() => {
+    // Load Google reCAPTCHA v3 script
+    const loadRecaptchaScript = () => {
+      const script = document.createElement('script');
+      script.src = 'https://www.google.com/recaptcha/api.js?render=6Ldq3ggmAAAAAJEU57TIWUH5i0FM0L7BlPKZ_IS4';
+      script.async = true;
+      script.defer = true;
+      document.head.appendChild(script);
+    };
+
+    // Get client IP address for rate limiting
+    const getIPAddress = async () => {
+      try {
+        const response = await fetch('https://api.ipify.org?format=json');
+        const data = await response.json();
+        setIpAddress(data.ip);
+      } catch (error) {
+        console.error('Failed to get IP address:', error);
+      }
+    };
+
+    loadRecaptchaScript();
+    getIPAddress();
+
+    // Check if user has submitted form recently (in last 5 minutes)
+    const lastSubmissionTime = localStorage.getItem('lastContactFormSubmission');
+    if (lastSubmissionTime) {
+      const elapsed = Date.now() - parseInt(lastSubmissionTime);
+      // 5 minutes in milliseconds
+      if (elapsed < 5 * 60 * 1000) {
+        setHasSubmittedRecently(true);
+      }
+    }
+  }, []);
+
+  // Execute reCAPTCHA before form submission
+  const executeRecaptcha = async () => {
+    if (!(window as any).grecaptcha) {
+      toast({
+        title: language === 'en' ? 'Error' : 'Error',
+        description: language === 'en' 
+          ? 'reCAPTCHA failed to load. Please try again later.' 
+          : 'reCAPTCHA no se pudo cargar. Por favor intente más tarde.',
+        variant: 'destructive',
+      });
+      return null;
+    }
+
     try {
-      const { error } = await supabase
-        .from('contact_submissions')
-        .insert({
+      const token = await (window as any).grecaptcha.execute('6Ldq3ggmAAAAAJEU57TIWUH5i0FM0L7BlPKZ_IS4', {action: 'contact_form'});
+      return token;
+    } catch (error) {
+      console.error('reCAPTCHA execution error:', error);
+      return null;
+    }
+  };
+
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    // If honeypot field is filled, silently "succeed" without submitting
+    if (values.honeypot) {
+      form.reset();
+      toast({
+        title: language === 'en' ? 'Message sent!' : '¡Mensaje enviado!',
+        description: language === 'en' 
+          ? 'Thank you for reaching out. We will get back to you soon.' 
+          : 'Gracias por contactarnos. Te responderemos pronto.',
+      });
+      return;
+    }
+    
+    // Check for recent submissions
+    if (hasSubmittedRecently) {
+      toast({
+        title: language === 'en' ? 'Rate limit reached' : 'Límite de envíos alcanzado',
+        description: language === 'en' 
+          ? 'Please wait at least 5 minutes before submitting another message.' 
+          : 'Por favor espera al menos 5 minutos antes de enviar otro mensaje.',
+        variant: 'destructive',
+      });
+      return;
+    }
+
+    setIsSubmitting(true);
+    
+    try {
+      // Execute reCAPTCHA
+      const token = await executeRecaptcha();
+      
+      if (!token) {
+        throw new Error('reCAPTCHA verification failed');
+      }
+      
+      // Call edge function instead of direct database insertion
+      const response = await fetch('https://djibnjqtxvefslifgvfb.functions.supabase.co/contact-form', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
           name: values.name,
           email: values.email,
-          company: values.subject, // Using subject field as company
+          subject: values.subject,
           message: values.message,
-        });
+          honeypot: values.honeypot,
+          recaptchaToken: token,
+          clientIp: ipAddress
+        }),
+      });
       
-      if (error) throw error;
+      const result = await response.json();
+      
+      if (!response.ok) {
+        throw new Error(result.error || 'Error submitting form');
+      }
+      
+      // Save submission time for client-side rate limiting
+      localStorage.setItem('lastContactFormSubmission', Date.now().toString());
+      setHasSubmittedRecently(true);
       
       toast({
         title: language === 'en' ? 'Message sent!' : '¡Mensaje enviado!',
@@ -157,6 +269,16 @@ const ContactSection = () => {
           <div>
             <Form {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+                {hasSubmittedRecently && (
+                  <Alert className="mb-4">
+                    <AlertDescription>
+                      {language === 'en' 
+                        ? 'You have recently submitted a message. Please wait 5 minutes before submitting another.'
+                        : 'Has enviado un mensaje recientemente. Por favor espera 5 minutos antes de enviar otro.'}
+                    </AlertDescription>
+                  </Alert>
+                )}
+                
                 <FormField
                   control={form.control}
                   name="name"
@@ -169,7 +291,7 @@ const ContactSection = () => {
                         <Input 
                           placeholder={language === 'en' ? "Your name" : "Tu nombre"} 
                           {...field}
-                          disabled={isSubmitting}
+                          disabled={isSubmitting || hasSubmittedRecently}
                         />
                       </FormControl>
                       <FormMessage />
@@ -190,7 +312,7 @@ const ContactSection = () => {
                           type="email" 
                           placeholder={language === 'en' ? "your.email@example.com" : "tu.correo@ejemplo.com"}
                           {...field}
-                          disabled={isSubmitting}
+                          disabled={isSubmitting || hasSubmittedRecently}
                         />
                       </FormControl>
                       <FormMessage />
@@ -210,7 +332,7 @@ const ContactSection = () => {
                         <Input 
                           placeholder={language === 'en' ? "How can I help you?" : "¿Cómo puedo ayudarte?"} 
                           {...field}
-                          disabled={isSubmitting}
+                          disabled={isSubmitting || hasSubmittedRecently}
                         />
                       </FormControl>
                       <FormMessage />
@@ -231,7 +353,7 @@ const ContactSection = () => {
                           placeholder={language === 'en' ? "Your message..." : "Tu mensaje..."}
                           className="min-h-[150px]"
                           {...field}
-                          disabled={isSubmitting}
+                          disabled={isSubmitting || hasSubmittedRecently}
                         />
                       </FormControl>
                       <FormMessage />
@@ -239,10 +361,30 @@ const ContactSection = () => {
                   )}
                 />
                 
+                {/* Honeypot field - hidden from real users */}
+                <FormField
+                  control={form.control}
+                  name="honeypot"
+                  render={({ field }) => (
+                    <FormItem style={{ display: 'none' }}>
+                      <FormControl>
+                        <Input 
+                          {...field}
+                          tabIndex={-1}
+                          autoComplete="off"
+                        />
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
+                
+                {/* Hidden reCAPTCHA badge */}
+                <div style={{ visibility: 'hidden' }} className="recaptcha-badge"></div>
+                
                 <Button 
                   type="submit" 
                   className="w-full bg-brand-blue hover:bg-brand-blue/90"
-                  disabled={isSubmitting}
+                  disabled={isSubmitting || hasSubmittedRecently}
                 >
                   <Send className="mr-2 h-4 w-4" /> 
                   {isSubmitting 
