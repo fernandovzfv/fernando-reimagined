@@ -22,6 +22,9 @@ const formSchema = z.object({
   honeypot: z.string().optional(), // Honeypot field
 });
 
+// reCAPTCHA site key
+const RECAPTCHA_SITE_KEY = '6Lf-HAwrAAAAALyrZq7QUOTaPL8ihhxLd8ZM4yHP';
+
 const ContactSection = () => {
   const { language } = useLanguage();
   const { toast } = useToast();
@@ -48,7 +51,7 @@ const ContactSection = () => {
     // Load Google reCAPTCHA v3 script
     const loadRecaptchaScript = () => {
       const script = document.createElement('script');
-      script.src = 'https://www.google.com/recaptcha/api.js?render=6Lf-HAwrAAAAANfLjh8osAm2QQqKLDpbXMeHkVFR';
+      script.src = `https://www.google.com/recaptcha/api.js?render=${RECAPTCHA_SITE_KEY}`;
       script.async = true;
       script.defer = true;
       document.head.appendChild(script);
@@ -93,7 +96,7 @@ const ContactSection = () => {
     }
 
     try {
-      const token = await (window as any).grecaptcha.execute('6Lf-HAwrAAAAANfLjh8osAm2QQqKLDpbXMeHkVFR', {action: 'contact_form'});
+      const token = await (window as any).grecaptcha.execute(RECAPTCHA_SITE_KEY, {action: 'contact_form'});
       return token;
     } catch (error) {
       console.error('reCAPTCHA execution error:', error);
@@ -401,3 +404,4 @@ const ContactSection = () => {
 };
 
 export default ContactSection;
+
