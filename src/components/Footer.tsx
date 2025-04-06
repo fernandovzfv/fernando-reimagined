@@ -28,7 +28,7 @@ const Footer = () => {
             </p>
           </div>
           
-          <nav className="flex flex-wrap justify-center gap-x-6 gap-y-3">
+          <nav className="flex flex-col justify-center gap-x-6 gap-y-3">
             <a href="#home" className="text-foreground/70 hover:text-foreground transition-colors text-sm">{t('home', language)}</a>
             <a href="#about" className="text-foreground/70 hover:text-foreground transition-colors text-sm">{t('about', language)}</a>
             <a href="#skills" className="text-foreground/70 hover:text-foreground transition-colors text-sm">{t('skills', language)}</a>
