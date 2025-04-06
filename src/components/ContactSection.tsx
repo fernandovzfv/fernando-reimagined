@@ -1,19 +1,77 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Mail, MapPin, Phone, Send } from 'lucide-react';
 import { useLanguage } from './LanguageProvider';
 import { t } from '@/lib/translations';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { useToast } from '@/hooks/use-toast';
+import { supabase } from '@/integrations/supabase/client';
+
+// Define schema for form validation
+const formSchema = z.object({
+  name: z.string().min(2, { message: "Name must be at least 2 characters." }),
+  email: z.string().email({ message: "Please enter a valid email address." }),
+  subject: z.string().min(2, { message: "Subject must be at least 2 characters." }),
+  message: z.string().min(10, { message: "Message must be at least 10 characters." }),
+});
 
 const ContactSection = () => {
   const { language } = useLanguage();
+  const { toast } = useToast();
+  const [isSubmitting, setIsSubmitting] = useState(false);
   
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    // This would typically handle form submission
-    console.log('Form submitted');
+  // Initialize form with validation schema
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      name: '',
+      email: '',
+      subject: '',
+      message: '',
+    },
+  });
+
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    setIsSubmitting(true);
+    try {
+      const { error } = await supabase
+        .from('contact_submissions')
+        .insert({
+          name: values.name,
+          email: values.email,
+          company: values.subject, // Using subject field as company
+          message: values.message,
+        });
+      
+      if (error) throw error;
+      
+      toast({
+        title: language === 'en' ? 'Message sent!' : '¡Mensaje enviado!',
+        description: language === 'en' 
+          ? 'Thank you for reaching out. We will get back to you soon.' 
+          : 'Gracias por contactarnos. Te responderemos pronto.',
+      });
+      
+      // Reset form after successful submission
+      form.reset();
+    } catch (error) {
+      console.error('Error submitting contact form:', error);
+      toast({
+        title: language === 'en' ? 'Failed to send message' : 'Error al enviar mensaje',
+        description: language === 'en' 
+          ? 'There was a problem sending your message. Please try again.' 
+          : 'Hubo un problema al enviar tu mensaje. Por favor intenta de nuevo.',
+        variant: 'destructive',
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -97,39 +155,102 @@ const ContactSection = () => {
           </div>
 
           <div>
-            <form onSubmit={handleSubmit} className="space-y-6">
-              <div>
-                <label htmlFor="name" className="block mb-2 font-medium">
-                  {t('nameLabel', language)}
-                </label>
-                <Input id="name" placeholder={language === 'en' ? "Your name" : "Tu nombre"} />
-              </div>
-              
-              <div>
-                <label htmlFor="email" className="block mb-2 font-medium">
-                  {t('emailLabel', language)}
-                </label>
-                <Input id="email" type="email" placeholder={language === 'en' ? "your.email@example.com" : "tu.correo@ejemplo.com"} />
-              </div>
-              
-              <div>
-                <label htmlFor="subject" className="block mb-2 font-medium">
-                  {t('subjectLabel', language)}
-                </label>
-                <Input id="subject" placeholder={language === 'en' ? "How can I help you?" : "¿Cómo puedo ayudarte?"} />
-              </div>
-              
-              <div>
-                <label htmlFor="message" className="block mb-2 font-medium">
-                  {t('messageLabel', language)}
-                </label>
-                <Textarea id="message" placeholder={language === 'en' ? "Your message..." : "Tu mensaje..."} className="min-h-[150px]" />
-              </div>
-              
-              <Button type="submit" className="w-full bg-brand-blue hover:bg-brand-blue/90">
-                <Send className="mr-2 h-4 w-4" /> {t('submitButton', language)}
-              </Button>
-            </form>
+            <Form {...form}>
+              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+                <FormField
+                  control={form.control}
+                  name="name"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="font-medium">
+                        {t('nameLabel', language)}
+                      </FormLabel>
+                      <FormControl>
+                        <Input 
+                          placeholder={language === 'en' ? "Your name" : "Tu nombre"} 
+                          {...field}
+                          disabled={isSubmitting}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                
+                <FormField
+                  control={form.control}
+                  name="email"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="font-medium">
+                        {t('emailLabel', language)}
+                      </FormLabel>
+                      <FormControl>
+                        <Input 
+                          type="email" 
+                          placeholder={language === 'en' ? "your.email@example.com" : "tu.correo@ejemplo.com"}
+                          {...field}
+                          disabled={isSubmitting}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                
+                <FormField
+                  control={form.control}
+                  name="subject"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="font-medium">
+                        {t('subjectLabel', language)}
+                      </FormLabel>
+                      <FormControl>
+                        <Input 
+                          placeholder={language === 'en' ? "How can I help you?" : "¿Cómo puedo ayudarte?"} 
+                          {...field}
+                          disabled={isSubmitting}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                
+                <FormField
+                  control={form.control}
+                  name="message"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="font-medium">
+                        {t('messageLabel', language)}
+                      </FormLabel>
+                      <FormControl>
+                        <Textarea 
+                          placeholder={language === 'en' ? "Your message..." : "Tu mensaje..."}
+                          className="min-h-[150px]"
+                          {...field}
+                          disabled={isSubmitting}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                
+                <Button 
+                  type="submit" 
+                  className="w-full bg-brand-blue hover:bg-brand-blue/90"
+                  disabled={isSubmitting}
+                >
+                  <Send className="mr-2 h-4 w-4" /> 
+                  {isSubmitting 
+                    ? (language === 'en' ? 'Sending...' : 'Enviando...') 
+                    : t('submitButton', language)}
+                </Button>
+              </form>
+            </Form>
           </div>
         </div>
       </div>
