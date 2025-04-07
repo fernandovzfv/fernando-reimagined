@@ -1,3 +1,4 @@
+
 #root {
   max-width: 1280px;
   margin: 0 auto;
@@ -39,4 +40,30 @@
 
 .read-the-docs {
   color: #888;
+}
+
+/* Dark mode compatibility */
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme]) {
+    color-scheme: dark;
+  }
+  
+  html:not([data-theme]) body {
+    background-color: #222;
+    color: #fff;
+  }
+  
+  /* Force particles visibility in dark mode */
+  html:not([data-theme]) .particle-container canvas {
+    opacity: 1 !important;
+    filter: brightness(1.5) !important;
+  }
+}
+
+/* Explicit handling for dark reader extensions */
+html[data-darkreader-scheme="dark"] .particle-container canvas,
+html.dark .particle-container canvas,
+html[data-theme="dark"] .particle-container canvas {
+  opacity: 1 !important;
+  filter: brightness(1.5) !important;
 }

@@ -14,8 +14,17 @@ const ParticleBackground = () => {
     await loadPolygonPath(engine);
   }, []);
 
+  // Define color variables based on theme
+  const particleColor = theme === 'dark' ? "#0071e3" : "#0071e3";
+  const linkColor = theme === 'dark' ? "#0071e3" : "#0071e3";
+  const particleOpacity = theme === 'dark' ? 0.5 : 0.3;
+  const linkOpacity = theme === 'dark' ? 0.3 : 0.2;
+
   return (
-    <div className="particle-container fixed inset-0 -z-10">
+    <div 
+      className="particle-container fixed inset-0 -z-10"
+      data-dark-mode-compatible="true"
+    >
       <Particles
         id="tsparticles"
         init={particlesInit}
@@ -31,7 +40,7 @@ const ParticleBackground = () => {
           fpsLimit: 60,
           particles: {
             color: {
-              value: "#0071e3",
+              value: particleColor,
             },
             move: {
               direction: "none",
@@ -51,7 +60,7 @@ const ParticleBackground = () => {
               value: 80,
             },
             opacity: {
-              value: 0.3,
+              value: particleOpacity,
             },
             shape: {
               type: "path",
@@ -68,10 +77,10 @@ const ParticleBackground = () => {
               value: { min: 5, max: 15 },
             },
             links: {
-              color: "#0071e3",
+              color: linkColor,
               distance: 150,
               enable: true,
-              opacity: 0.2,
+              opacity: linkOpacity,
               width: 1,
             },
             collisions: {
