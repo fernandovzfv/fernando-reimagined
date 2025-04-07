@@ -34,6 +34,10 @@ const HeroSection = () => {
     setResumeDialogOpen(true);
   };
   
+  const handleGetInTouch = () => {
+    window.location.href = 'mailto:contact@example.com';
+  };
+  
   return (
     <section id="home" className="min-h-screen flex flex-col justify-center relative overflow-hidden pb-16 pt-32">
       <div className="container mx-auto container-padding relative z-10">
@@ -61,7 +65,10 @@ const HeroSection = () => {
           </p>
           
           <div className="flex flex-wrap gap-4 mt-10 animate-fade-in" style={{ animationDelay: '0.4s' }}>
-            <Button className="bg-brand-blue hover:bg-brand-blue/90">
+            <Button 
+              className="bg-brand-blue hover:bg-brand-blue/90"
+              onClick={handleGetInTouch}
+            >
               <Mail className="mr-2 h-4 w-4" /> {t('ctaButton', language)}
             </Button>
             <Button 
