@@ -11,7 +11,7 @@ type ThemeContextType = {
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const [theme, setTheme] = useState<Theme>('light');
+  const [theme, setTheme] = useState<Theme>('dark'); // Changed default to 'dark'
 
   useEffect(() => {
     // Check for saved theme preference or use system preference
@@ -23,6 +23,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     } else if (prefersDark) {
       setTheme('dark');
     }
+    // If no saved theme and no system preference for dark, default to dark (already set in state)
   }, []);
 
   useEffect(() => {
