@@ -95,18 +95,18 @@ const AboutSection = () => {
                   className="relative border border-border/50 shadow-sm hover:shadow-md transition-shadow overflow-hidden"
                 >
                   <div 
-                    className="absolute inset-0 z-0 opacity-100 bg-cover bg-center"
+                    className="absolute inset-0 z-0 bg-cover bg-center opacity-40 dark:opacity-30"
                     style={{
                       backgroundImage: imageUrls[value.imageName] ? `url(${imageUrls[value.imageName]})` : 'none'
                     }}
                   />
-                  <div className="absolute inset-0 bg-card/80 backdrop-blur-sm z-10" />
+                  <div className="absolute inset-0 bg-card/60 dark:bg-card/80 backdrop-blur-[2px] z-10" />
                   <CardContent className="p-6 relative z-20">
                     <div className="rounded-full bg-accent/20 p-3 w-fit mb-4">
                       {value.icon}
                     </div>
-                    <h3 className="text-xl font-semibold mb-2">{t(value.titleKey as any, language)}</h3>
-                    <p className="text-foreground/70">{t(value.descriptionKey as any, language)}</p>
+                    <h3 className="text-xl font-semibold mb-2 text-foreground">{t(value.titleKey as any, language)}</h3>
+                    <p className="text-foreground/90">{t(value.descriptionKey as any, language)}</p>
                   </CardContent>
                 </Card>
               ))}
