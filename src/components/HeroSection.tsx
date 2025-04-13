@@ -35,16 +35,16 @@ const HeroSection = () => {
   };
   
   const handleGetInTouch = () => {
-    window.location.href = 'mailto:contact@example.com';
+    window.location.href = 'mailto:fernando.vazquez@telmexmail.com';
   };
   
   return (
     <section id="home" className="min-h-screen flex flex-col justify-center relative overflow-hidden pb-16 pt-32">
       <div className="container mx-auto container-padding relative z-10">
-        <div className="max-w-3xl">
+        <div className="max-w-4xl">
           <h1 className="animate-fade-in backdrop-blur-sm inline-block text-foreground">
             <span className="relative">
-              <span className="inline-block">Hi! I'm </span>
+              <span className="inline-block">{t('iam', language)}</span>
               {" "}
               <span className="inline-block text-brand-blue transform font-extrabold" 
                      style={{ 
