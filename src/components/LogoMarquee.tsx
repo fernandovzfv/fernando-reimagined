@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { cn } from '@/lib/utils';
 import {
   Carousel,
@@ -7,6 +7,7 @@ import {
   CarouselItem,
 } from '@/components/ui/carousel';
 import { supabase } from '@/integrations/supabase/client';
+import useEmblaCarousel from 'embla-carousel-react';
 
 const logos = [
   { name: 'AutoCAD', alt: 'AutoCAD Logo' },
@@ -19,6 +20,15 @@ const logos = [
 ];
 
 const LogoMarquee = ({ className }: { className?: string }) => {
+  const [emblaRef, emblaApi] = useEmblaCarousel({
+    loop: true,
+    dragFree: true,
+    containScroll: "keepSnaps",
+    align: "start",
+  });
+  
+  const autoplayRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  
   const getImageUrl = (logoName: string) => {
     const { data } = supabase
       .storage
@@ -27,21 +37,41 @@ const LogoMarquee = ({ className }: { className?: string }) => {
     
     return data.publicUrl;
   };
+  
+  // Set up continuous scrolling
+  useEffect(() => {
+    if (!emblaApi) return;
+    
+    const autoplay = () => {
+      if (!emblaApi || !document.visibilityState) return;
+      if (document.visibilityState !== 'visible') return;
+      
+      emblaApi.scrollNext();
+      
+      autoplayRef.current = setTimeout(autoplay, 30); // Adjust the speed as needed (smaller value = faster)
+    };
+    
+    // Start autoplay
+    autoplayRef.current = setTimeout(autoplay, 30);
+    
+    return () => {
+      // Clean up autoplay on component unmount
+      if (autoplayRef.current) {
+        clearTimeout(autoplayRef.current);
+      }
+    };
+  }, [emblaApi]);
+
+  // To create continuous scrolling effect, we duplicate the logos
+  const duplicatedLogos = [...logos, ...logos, ...logos];
 
   return (
-    <div className={cn('w-full py-8', className)}>
+    <div className={cn('w-full py-8 overflow-hidden', className)}>
       <div className="container mx-auto">
-        <Carousel
-          opts={{
-            align: 'start',
-            loop: true,
-            dragFree: true,
-          }}
-          className="w-full"
-        >
-          <CarouselContent className="flex items-center">
-            {logos.map((logo) => (
-              <CarouselItem key={logo.name} className="flex basis-1/2 md:basis-1/3 lg:basis-1/4 items-center justify-center p-4">
+        <div ref={emblaRef} className="overflow-hidden">
+          <div className="flex">
+            {duplicatedLogos.map((logo, index) => (
+              <div key={`${logo.name}-${index}`} className="flex-shrink-0 flex-grow-0 basis-1/3 md:basis-1/5 lg:basis-1/7 px-4">
                 <div className="relative h-16 w-full opacity-70 hover:opacity-100 transition-opacity">
                   <img
                     src={getImageUrl(logo.name)}
@@ -53,10 +83,10 @@ const LogoMarquee = ({ className }: { className?: string }) => {
                     }}
                   />
                 </div>
-              </CarouselItem>
+              </div>
             ))}
-          </CarouselContent>
-        </Carousel>
+          </div>
+        </div>
       </div>
     </div>
   );
