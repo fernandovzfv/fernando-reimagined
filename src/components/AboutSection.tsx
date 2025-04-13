@@ -1,35 +1,67 @@
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Shield, Lightbulb, Code, BookOpen } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { useLanguage } from './LanguageProvider';
 import { t } from '@/lib/translations';
+import { supabase } from '@/integrations/supabase/client';
 
 const AboutSection = () => {
   const { language } = useLanguage();
+  const [imageUrls, setImageUrls] = useState<Record<string, string>>({});
   
   const values = [
     {
       icon: <Lightbulb className="h-6 w-6 text-brand-purple" />,
       titleKey: "valuesTitle1",
-      descriptionKey: "valuesDesc1"
+      descriptionKey: "valuesDesc1",
+      imageName: "chemical-plants.jpg"
     },
     {
       icon: <Code className="h-6 w-6 text-brand-teal" />,
       titleKey: "valuesTitle2",
-      descriptionKey: "valuesDesc2"
+      descriptionKey: "valuesDesc2",
+      imageName: "pressure-vessels.jpg"
     },
     {
       icon: <Shield className="h-6 w-6 text-brand-blue" />,
       titleKey: "valuesTitle3",
-      descriptionKey: "valuesDesc3"
+      descriptionKey: "valuesDesc3",
+      imageName: "shell-&-tube-heat-exchangers.jpg"
     },
     {
       icon: <BookOpen className="h-6 w-6 text-brand-purple" />,
       titleKey: "valuesTitle4",
-      descriptionKey: "valuesDesc4"
+      descriptionKey: "valuesDesc4",
+      imageName: "package-equipment.jpg"
     }
   ];
+
+  useEffect(() => {
+    // Fetch public URLs for images from Supabase
+    const loadImages = async () => {
+      try {
+        const urls: Record<string, string> = {};
+        
+        for (const value of values) {
+          const { data } = await supabase
+            .storage
+            .from('pictures')
+            .getPublicUrl(value.imageName);
+            
+          if (data?.publicUrl) {
+            urls[value.imageName] = data.publicUrl;
+          }
+        }
+        
+        setImageUrls(urls);
+      } catch (error) {
+        console.error('Error loading images from Supabase:', error);
+      }
+    };
+    
+    loadImages();
+  }, []);
 
   return (
     <section id="about" className="min-h-screen flex items-center section-padding bg-secondary/80 backdrop-blur-sm">
@@ -58,8 +90,18 @@ const AboutSection = () => {
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {values.map((value, index) => (
-                <Card key={index} className="border border-border/50 shadow-sm hover:shadow-md transition-shadow bg-card/90 backdrop-blur-sm">
-                  <CardContent className="p-6">
+                <Card 
+                  key={index} 
+                  className="relative border border-border/50 shadow-sm hover:shadow-md transition-shadow overflow-hidden"
+                >
+                  <div 
+                    className="absolute inset-0 z-0 opacity-20 bg-cover bg-center"
+                    style={{
+                      backgroundImage: imageUrls[value.imageName] ? `url(${imageUrls[value.imageName]})` : 'none'
+                    }}
+                  />
+                  <div className="absolute inset-0 bg-card/80 backdrop-blur-sm z-10" />
+                  <CardContent className="p-6 relative z-20">
                     <div className="rounded-full bg-accent/20 p-3 w-fit mb-4">
                       {value.icon}
                     </div>
