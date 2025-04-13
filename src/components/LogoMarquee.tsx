@@ -6,7 +6,7 @@ import {
   CarouselContent,
   CarouselItem,
 } from '@/components/ui/carousel';
-import { supabaseClient } from '@/integrations/supabase/client';
+import { supabase } from '@/integrations/supabase/client';
 
 const logos = [
   { name: 'AutoCAD', alt: 'AutoCAD Logo' },
@@ -20,7 +20,7 @@ const logos = [
 
 const LogoMarquee = ({ className }: { className?: string }) => {
   const getImageUrl = (logoName: string) => {
-    const { data } = supabaseClient
+    const { data } = supabase
       .storage
       .from('pictures')
       .getPublicUrl(`${logoName.toLowerCase()}-logo.png`);
