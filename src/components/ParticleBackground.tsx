@@ -15,10 +15,10 @@ const ParticleBackground = () => {
   }, []);
 
   // Define color variables based on theme
-  const particleColor = theme === 'dark' ? "#0071e3" : "#0071e3";
-  const linkColor = theme === 'dark' ? "#0071e3" : "#0071e3";
-  const particleOpacity = theme === 'dark' ? 0.5 : 0.3;
-  const linkOpacity = theme === 'dark' ? 0.3 : 0.2;
+  const particleColor = theme === 'dark' ? "#e4eef8" : "#0071e3";
+  const linkColor = theme === 'dark' ? "#e4eef8" : "#0071e3";
+  const particleOpacity = theme === 'dark' ? 0.3 : 0.5;
+  const linkOpacity = theme === 'dark' ? 0.2 : 0.5;
 
   return (
     <div 

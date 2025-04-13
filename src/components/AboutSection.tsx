@@ -61,7 +61,7 @@ const AboutSection = () => {
         const { data: profileData } = await supabase
           .storage
           .from('pictures')
-          .getPublicUrl('foto-fv.PNG');
+          .getPublicUrl('foto-fv.JPG');
           
         if (profileData?.publicUrl) {
           setProfileImageUrl(profileData.publicUrl);
@@ -111,21 +111,21 @@ const AboutSection = () => {
               {values.map((value, index) => (
                 <Card 
                   key={index} 
-                  className="relative border border-border/50 shadow-sm hover:shadow-md transition-shadow overflow-hidden"
+                  className="relative border border-border/40 shadow-sm hover:shadow-md transition-shadow overflow-hidden"
                 >
-                  <div 
+                  {/* <div 
                     className="absolute inset-0 z-0 bg-cover bg-center opacity-90 dark:opacity-100"
                     style={{
                       backgroundImage: imageUrls[value.imageName] ? `url(${imageUrls[value.imageName]})` : 'none'
                     }}
-                  />
+                  /> */}
                   <div className="absolute inset-0 bg-card/60 dark:bg-card/80 backdrop-blur-[2px] z-10" />
                   <CardContent className="p-6 relative z-20">
-                    <div className="rounded-full bg-accent/20 p-3 w-fit mb-4">
+                    {/* <div className="rounded-full bg-accent/20 p-3 w-fit mb-4">
                       {value.icon}
-                    </div>
+                    </div> */}
                     <h3 className="text-xl font-semibold mb-2 text-foreground">{t(value.titleKey as any, language)}</h3>
-                    <p className="text-foreground/90">{t(value.descriptionKey as any, language)}</p>
+                    <p className="text-foreground/80">{t(value.descriptionKey as any, language)}</p>
                   </CardContent>
                 </Card>
               ))}
