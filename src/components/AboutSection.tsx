@@ -9,6 +9,7 @@ import { supabase } from '@/integrations/supabase/client';
 const AboutSection = () => {
   const { language } = useLanguage();
   const [imageUrls, setImageUrls] = useState<Record<string, string>>({});
+  const [profileImageUrl, setProfileImageUrl] = useState<string | null>(null);
   
   const values = [
     {
@@ -55,6 +56,18 @@ const AboutSection = () => {
         }
         
         setImageUrls(urls);
+        
+        // Fetch the profile image
+        const { data: profileData } = await supabase
+          .storage
+          .from('pictures')
+          .getPublicUrl('foto-fv.PNG');
+          
+        if (profileData?.publicUrl) {
+          setProfileImageUrl(profileData.publicUrl);
+        } else {
+          console.error('Could not load profile image from Supabase');
+        }
       } catch (error) {
         console.error('Error loading images from Supabase:', error);
       }
@@ -70,11 +83,17 @@ const AboutSection = () => {
           {/* Left column with image */}
           <div className="lg:col-span-2 flex justify-center">
             <div className="relative w-full h-[500px] md:h-[600px] lg:h-[700px] overflow-hidden rounded-md border-4 border-brand-blue/20 shadow-xl">
-              <img
-                src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?ixlib=rb-1.2.1&auto=format&fit=crop&w=1200&q=80"
-                alt="Developer profile"
-                className="w-full h-full object-cover"
-              />
+              {profileImageUrl ? (
+                <img
+                  src={profileImageUrl}
+                  alt="Fernando Vázquez profile"
+                  className="w-full h-full object-cover"
+                />
+              ) : (
+                <div className="w-full h-full flex items-center justify-center bg-muted">
+                  <p className="text-muted-foreground">Loading profile image...</p>
+                </div>
+              )}
             </div>
           </div>
           
