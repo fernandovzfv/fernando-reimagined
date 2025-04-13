@@ -44,12 +44,11 @@ const Navbar = () => {
       )}
     >
       <div className="container mx-auto flex justify-between items-center container-padding">
-        <Link to="/" className="text-2xl font-bold text-foreground">
-          <span className="relative">
-            <span className="inline-block text-brand-blue transform -rotate-12 font-extrabold">F</span>
-            <span className="inline-block">ernando </span>
-            <span className="inline-block text-brand-blue transform -rotate-12 font-extrabold">V</span>
-            <span className="inline-block">ázquez</span></span>
+        <Link to="/" className="text-2xl font-bold text-foreground whitespace-nowrap">
+          <span className="inline-block text-brand-blue transform -rotate-12 font-extrabold">F</span>
+          <span className="inline-block">ernando </span>
+          <span className="inline-block text-brand-blue transform -rotate-12 font-extrabold">V</span>
+          <span className="inline-block">ázquez</span>
         </Link>
 
         {/* Desktop Navigation */}
