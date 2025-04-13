@@ -10,19 +10,19 @@ const SkillsSection = () => {
   const { language } = useLanguage();
   
   const technicalSkills = [
-    { name: "JavaScript", level: 90 },
-    { name: "React.js", level: 85 },
-    { name: "Node.js", level: 80 },
-    { name: "TypeScript", level: 75 },
-    { name: "HTML & CSS", level: 95 },
-    { name: "SQL", level: 70 },
+    { name: "EPC Projects", level: 90 },
+    { name: "Pressure Vessels", level: 95 },
+    { name: "Shell & Tube Heat Exchangers", level: 95 },
+    { name: "Package Equipment", level: 80 },
+    { name: "Mechanical Completion", level: 75 },
+    { name: "Piping", level: 60 },
   ];
 
   const otherSkills = [
     "Problem Solving",
     "Team Collaboration",
     "Project Management",
-    "UX/UI Design Principles",
+    "CAD Design",
     "Agile Methodologies",
     "Technical Documentation"
   ];
@@ -31,7 +31,7 @@ const SkillsSection = () => {
     "Resolución de Problemas",
     "Colaboración en Equipo",
     "Gestión de Proyectos",
-    "Principios de Diseño UX/UI",
+    "Manejo de CAD",
     "Metodologías Ágiles",
     "Documentación Técnica"
   ] : otherSkills;
@@ -82,7 +82,7 @@ const SkillsSection = () => {
                   <span className="font-medium">{t('english', language)}</span>
                   <span className="text-foreground/70">{t('fluent', language)}</span>
                 </div>
-                <Progress value={95} className="h-2" />
+                <Progress value={65} className="h-2" />
               </div>
               <div>
                 <div className="flex justify-between mb-2">
