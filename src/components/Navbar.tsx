@@ -34,7 +34,6 @@ const Navbar = () => {
     { name: t('skills', language), href: '#skills', isAnchor: true },
     { name: t('projects', language), href: '#projects', isAnchor: true },
     { name: t('contact', language), href: '#contact', isAnchor: true },
-    { name: 'CV', href: '/cv', isAnchor: false },
   ];
 
   return (
