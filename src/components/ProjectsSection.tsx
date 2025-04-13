@@ -13,30 +13,38 @@ const ProjectsSection = () => {
     {
       titleKey: "project1Title",
       descriptionKey: "project1Desc",
-      tags: ["React", "Tailwind CSS", "Responsive Design"],
-      github: "https://github.com/yourusername/portfolio",
-      demo: "https://yourportfolio.com"
+      tags: ["Shel and Tube Heat Exchangers", "EPC Projects", "Pressure Vessels", "Hairpin Heat Exchangers"],
+      clientPage: "https://hrrl.in/Hrrl/home.jsp"
     },
     {
       titleKey: "project2Title",
       descriptionKey: "project2Desc",
-      tags: ["React", "Node.js", "MongoDB", "Socket.io"],
-      github: "https://github.com/yourusername/task-manager",
-      demo: "https://yourtaskmanager.com"
+      tags: ["API-650", "Package Equipment", "Mechanical Completion", "Piping"],
+      clientPage: "https://www.cempro.com/"
     },
     {
       titleKey: "project3Title",
       descriptionKey: "project3Desc",
-      tags: ["React", "Express", "PostgreSQL", "Stripe"],
-      github: "https://github.com/yourusername/ecommerce",
-      demo: "https://yourecommerce.com"
+      tags: ["Pressuse Vessels", "Reactors", "Package Equipment", "Mechanical Completion", "Start up"],
+      clientPage: "https://www.thor.com/about"
     },
     {
       titleKey: "project4Title",
       descriptionKey: "project4Desc",
-      tags: ["JavaScript", "CSS", "Weather API"],
-      github: "https://github.com/yourusername/weather-app",
-      demo: "https://yourweatherapp.com"
+      tags: ["Pressure Vessels", "Shell and Tube Heat Exchangers", "Cranes", "Package Equipment"],
+      clientPage: "http://www.iquisa.com.mx/quienes-somos.html"
+    },
+    {
+      titleKey: "project5Title",
+      descriptionKey: "project4Desc",
+      tags: ["API-650"],
+      clientPage: "https://www.refineriatalara.com/"
+    },
+    {
+      titleKey: "project6Title",
+      descriptionKey: "project6Desc",
+      tags: ["Pressure Vessels", "Inspection"],
+      clientPage: "https://latam.nissannews.com/es/releases/nissan-inaugura-nueva-planta-en-aguascalientes-construyendo-sobre-una-reputaci-n-de-calidad-y-eficiencia"
     }
   ];
 
@@ -78,20 +86,12 @@ const ProjectsSection = () => {
               </CardContent>
               <CardFooter className="flex justify-between">
                 <a 
-                  href={project.github} 
+                  href={project.clientPage} 
                   target="_blank" 
                   rel="noopener noreferrer"
                   className="flex items-center gap-1 text-sm text-foreground/70 hover:text-brand-blue transition-colors"
                 >
-                  <Github size={16} /> {t('code', language)}
-                </a>
-                <a 
-                  href={project.demo} 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-1 text-sm text-foreground/70 hover:text-brand-blue transition-colors"
-                >
-                  <ExternalLink size={16} /> {t('liveDemo', language)}
+                  <ExternalLink size={16} /> {t('clientPage', language)}
                 </a>
               </CardFooter>
             </Card>

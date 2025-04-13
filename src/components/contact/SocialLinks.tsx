@@ -21,7 +21,7 @@ const SocialLinks = () => {
           </svg>
         </a>
         <a 
-          href="https://linkedin.com" 
+          href="https://www.linkedin.com/in/fernandovzfv" 
           target="_blank" 
           rel="noopener noreferrer"
           className="p-3 bg-secondary rounded-full hover:bg-primary/10 transition-colors"
@@ -31,7 +31,7 @@ const SocialLinks = () => {
           </svg>
         </a>
         <a 
-          href="https://twitter.com" 
+          href="https://x.com/Fernandovzfv" 
           target="_blank" 
           rel="noopener noreferrer"
           className="p-3 bg-secondary rounded-full hover:bg-primary/10 transition-colors"

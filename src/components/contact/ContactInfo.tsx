@@ -16,17 +16,7 @@ const ContactInfo = () => {
           <div>
             <h4 className="font-semibold">{t('email', language)}</h4>
             <a href="mailto:contact@example.com" className="text-foreground/70 hover:text-brand-blue transition-colors">
-              contact@example.com
-            </a>
-          </div>
-        </div>
-        
-        <div className="flex items-start gap-4">
-          <Phone className="h-6 w-6 text-brand-purple mt-1" />
-          <div>
-            <h4 className="font-semibold">{t('phone', language)}</h4>
-            <a href="tel:+1234567890" className="text-foreground/70 hover:text-brand-blue transition-colors">
-              +1 (234) 567-890
+              fernando.vazquez@telmexmail.com
             </a>
           </div>
         </div>
@@ -35,7 +25,7 @@ const ContactInfo = () => {
           <MapPin className="h-6 w-6 text-brand-teal mt-1" />
           <div>
             <h4 className="font-semibold">{t('location', language)}</h4>
-            <p className="text-foreground/70">Mexico City, Mexico</p>
+            <p className="text-foreground/70">Atizapan de Z., Edomex, México</p>
           </div>
         </div>
       </div>

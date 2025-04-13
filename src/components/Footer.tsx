@@ -24,7 +24,7 @@ const Footer = () => {
             </a>
             
             <p className="mt-1 text-foreground/70 text-sm">
-              {language === 'en' ? 'Computer Science Engineer' : 'Ingeniero en Ciencias de la Computación'}
+              {language === 'en' ? 'Static | Heat Transfer | Package Equipment Specialist' : 'Equipo Estático | Equipo de Transferencia de Calor | Equipos Paquete'}
             </p>
           </div>
           
