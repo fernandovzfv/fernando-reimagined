@@ -95,7 +95,7 @@ const AboutSection = () => {
                   className="relative border border-border/50 shadow-sm hover:shadow-md transition-shadow overflow-hidden"
                 >
                   <div 
-                    className="absolute inset-0 z-0 opacity-80 bg-cover bg-center"
+                    className="absolute inset-0 z-0 opacity-100 bg-cover bg-center"
                     style={{
                       backgroundImage: imageUrls[value.imageName] ? `url(${imageUrls[value.imageName]})` : 'none'
                     }}
