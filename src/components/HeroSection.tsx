@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { useLanguage } from './LanguageProvider';
 import { t } from '@/lib/translations';
 import ResumeRequestDialog from './ResumeRequestDialog';
+import LogoMarquee from './LogoMarquee';
 
 const HeroSection = () => {
   const { language } = useLanguage();
@@ -39,8 +40,8 @@ const HeroSection = () => {
   };
   
   return (
-    <section id="home" className="min-h-screen flex flex-col justify-center relative overflow-hidden pb-16 pt-32">
-      <div className="container mx-auto container-padding relative z-10">
+    <section id="home" className="min-h-screen flex flex-col justify-between relative overflow-hidden pb-16 pt-32">
+      <div className="container mx-auto container-padding relative z-10 flex-1 flex flex-col justify-center">
         <div className="max-w-4xl">
           <h1 className="animate-fade-in backdrop-blur-sm inline-block text-foreground">
             <span className="relative">
@@ -93,7 +94,10 @@ const HeroSection = () => {
         </div>
       </div>
       
-      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+      {/* Logo Marquee */}
+      <LogoMarquee className="mt-auto backdrop-blur-sm bg-background/30 z-10" />
+      
+      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce z-20">
         <a href="#about" className="text-foreground/50 hover:text-foreground transition-colors">
           <ArrowDown size={24} />
         </a>
